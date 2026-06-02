@@ -1,0 +1,73 @@
+#include <stdio.h>
+
+float discount(float x){
+	if(x >= 500){
+		if(x >= 2000 && x <= 4000 && x != 2027)
+			return x * 0.05;
+		else if(x > 2026.99 && x < 2027.01)
+			return 270;
+		else if(x >= 5000){
+			if(x * 0.1 >= 2000){
+				return 2000;
+			}
+			else{
+				return x * 0.1;
+				}
+			}
+		else{
+			return 50;
+		}
+	}	
+	
+	else{
+		return 0;
+	}
+}
+
+int main(){
+	float cart_value, cp, cp_to_tk;
+	float total_dis, payable;
+	float remaining_cp, earned_cp;
+	int a;
+
+	printf("Enter customer point: ");
+	scanf("%f", &cp);
+	
+	
+	for(int i = 1; i > 0; i++){
+		printf("Enter the cart value: ");
+		scanf("%f", &cart_value);
+		
+		printf("Do you want to spend your customer point?\nPress '0' if no, '1' if yes\n");
+		scanf("%d", &a);
+		if(a == 0){
+			cp_to_tk = 0;
+			remaining_cp = cp;
+		}
+		else{
+			cp_to_tk = cp / 40;
+		}
+		if(cart_value - discount(cart_value) >= cp_to_tk){
+			total_dis = cp_to_tk + discount(cart_value);
+			payable = cart_value - total_dis;
+			earned_cp = (cart_value / 10) * 4;
+			if(a != 0) remaining_cp = 0; //all cp used successfully
+		}
+		else{
+			payable = 0;
+			total_dis = cart_value;
+			remaining_cp = (cp_to_tk - (cart_value - discount(cart_value))) * 40;
+			earned_cp = cart_value * 0.4;
+		}
+
+		cp = remaining_cp + earned_cp;
+		printf("\nTotal discount: %.2f\nPayable: %.2f\nUpdated CP: %.2f\n\n", total_dis, payable, cp);
+
+		printf("Press '-1' if you want to quit, or any other number to continue.\n");
+		scanf("%d", &a);
+		printf("\n");
+		if(a == -1) break;
+	}
+
+	return 0;	
+}
