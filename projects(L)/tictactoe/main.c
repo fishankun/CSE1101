@@ -7,10 +7,11 @@ Human (X) vs Computer (O)
 
 Bot strategy:
 1. Win if possible
-2. Block opponent
-3. Take center
-4. Take corner
-5. Take edge
+2. Block opponent from winning
+3. Block opponent's fork
+4. Take center
+5. Take corner
+6. Take edge
 */
 
 char p1 = '1', p2 = '2', p3 = '3', p4 = '4', p5 = '5', p6 = '6', p7 = '7', p8 = '8', p9 = '9';
@@ -20,6 +21,7 @@ int checker();
 int block_or_win(char symbol);
 int scan();
 int is_occupied(int move);
+int fork_block();
 
 int main(){
     int i, move, replay = 1; 
@@ -170,6 +172,10 @@ int bot(){
     //should the bot block?
     move = block_or_win('X');
     if(move != 0) return move;
+
+    //should the bot block a fork?
+    move = fork_block();
+    if(move != 0) return move;
     
     if(move == 0){
         //first take the center
@@ -246,5 +252,26 @@ int block_or_win(char symbol){
     else if(p4 == symbol && p6 == symbol && p5 == '5') return 5;
     else if(p9 == symbol && p7 == symbol && p8 == '8') return 8;
     else if(p9 == symbol && p3 == symbol && p6 == '6') return 6;
+    return 0;
+}
+int fork_block(){
+    if(p5 == 'O'){
+        if((p1 == 'X' && p9 == 'X') || (p3 == 'X' && p7 == 'X')){
+            if(p2 == '2') return 2;
+            else if(p8 == '8') return 8;
+        }
+        else if(p8 == 'X' && p6 == 'X'){
+            if(p3 == '3') return 3;
+        }
+        else if(p8 == 'X' && p1 == 'X'){
+            if(p4 == '4') return 4;
+        }
+        else if(p8 == 'X' && p3 == 'X'){
+            if(p6 == '6') return 6;
+        }
+        else if(p6 == 'X' && p7 == 'X'){
+            if(p8 == '8') return 8;
+        }
+    }
     return 0;
 }
