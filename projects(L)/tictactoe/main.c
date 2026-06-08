@@ -18,6 +18,7 @@ char p1 = '1', p2 = '2', p3 = '3', p4 = '4', p5 = '5', p6 = '6', p7 = '7', p8 = 
 void board(int move, char symbol);
 int bot();
 int checker();
+int won(char symbol);
 int block_or_win(char symbol);
 int scan();
 int is_occupied(int move);
@@ -106,42 +107,15 @@ int scan(){
     return move;
 }
 int is_occupied(int move){
-    if(move == 1){
-        if(p1 != '1') return 1;
-        else return 0;
-    }
-    else if(move == 2){
-        if(p2 != '2') return 1;
-        else return 0;
-    }
-    else if(move == 3){
-        if(p3 != '3') return 1;
-        else return 0;
-    }
-    else if(move == 4){
-        if(p4 != '4') return 1;
-        else return 0;
-    }
-    else if(move == 5){
-        if(p5 != '5') return 1;
-        else return 0;
-    }
-    else if(move == 6){
-        if(p6 != '6') return 1;
-        else return 0;
-    }
-    else if(move == 7){
-        if(p7 != '7') return 1;
-        else return 0;
-    }
-    else if(move == 8){
-        if(p8 != '8') return 1;
-        else return 0;
-    }
-    else if(move == 9){
-        if(p9 != '9') return 1;
-        else return 0;
-    }
+    if(move == 1) return p1 != '1';
+    else if(move == 2) return p2 != '2';
+    else if(move == 3) return p3 != '3';
+    else if(move == 4) return p4 != '4';
+    else if(move == 5) return p5 != '5';
+    else if(move == 6) return p6 != '6';
+    else if(move == 7) return p7 != '7';
+    else if(move == 8) return p8 != '8';
+    else if(move == 9) return p9 != '9';
     else return 1;
 }
 void board(int move, char symbol){
@@ -194,26 +168,20 @@ int bot(){
     return 0;  
 }
 int checker(){
-    int s = 0;
-    if(p1 == 'X' && p2 == 'X' && p3 == 'X') s = 1;
-    else if(p4 == 'X' && p5 == 'X' && p6 == 'X') s = 1;
-    else if(p7 == 'X' && p8 == 'X' && p9 == 'X') s = 1;
-    else if(p1 == 'X' && p4 == 'X' && p7 == 'X') s = 1;
-    else if(p2 == 'X' && p5 == 'X' && p8 == 'X') s = 1;
-    else if(p3 == 'X' && p6 == 'X' && p9 == 'X') s = 1;
-    else if(p1 == 'X' && p5 == 'X' && p9 == 'X') s = 1;
-    else if(p3 == 'X' && p5 == 'X' && p7 == 'X') s = 1;
-    
-    else if(p1 == 'O' && p2 == 'O' && p3 == 'O') s = 2;
-    else if(p4 == 'O' && p5 == 'O' && p6 == 'O') s = 2;
-    else if(p7 == 'O' && p8 == 'O' && p9 == 'O') s = 2;
-    else if(p1 == 'O' && p4 == 'O' && p7 == 'O') s = 2;
-    else if(p2 == 'O' && p5 == 'O' && p8 == 'O') s = 2;
-    else if(p3 == 'O' && p6 == 'O' && p9 == 'O') s = 2;
-    else if(p1 == 'O' && p5 == 'O' && p9 == 'O') s = 2;
-    else if(p3 == 'O' && p5 == 'O' && p7 == 'O') s = 2;
-
-    return s;
+    if(won('X')) return 1;
+    else if(won('O')) return 2;
+    else return 0;
+}
+int won(char symbol){
+    if(p1 == symbol && p2 == symbol && p3 == symbol) return 1;
+    else if(p4 == symbol && p5 == symbol && p6 == symbol) return 1;
+    else if(p7 == symbol && p8 == symbol && p9 == symbol) return 1;
+    else if(p1 == symbol && p4 == symbol && p7 == symbol) return 1;
+    else if(p2 == symbol && p5 == symbol && p8 == symbol) return 1;
+    else if(p3 == symbol && p6 == symbol && p9 == symbol) return 1;
+    else if(p1 == symbol && p5 == symbol && p9 == symbol) return 1;
+    else if(p3 == symbol && p5 == symbol && p7 == symbol) return 1;
+    else return 0;
 }
 int block_or_win(char symbol){
     if(p5 == symbol){
