@@ -25,8 +25,9 @@ int is_occupied(int move);
 int fork_block();
 
 int main(){
-    int i, move, replay = 1; 
-    while(replay != 0){
+    int i, move;
+    char replay = '1'; //initialize replay to a non-zero value to start the game loop 
+    while(replay != '0'){
         int turn = 0, result = 0; //reset variables for new game
 
         printf("===============================================\n");
@@ -81,10 +82,10 @@ int main(){
             printf("===============================================\n\n");
         }
         printf("Do you want to play again? (any key for yes, 0 for no): ");
-        scanf("%d", &replay);
+        scanf(" %c", &replay);
         
         // Reset board
-        if(replay != 0){
+        if(replay != '0'){
             p1='1'; p2='2'; p3='3';
             p4='4'; p5='5'; p6='6';
             p7='7'; p8='8'; p9='9';
