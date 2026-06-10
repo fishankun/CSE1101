@@ -96,8 +96,8 @@ int main(){
 }
 
 int scan(){
-    int i, move, s = 0;
-    for(i = 1; i > 0; i++){
+    int move, s = 0;
+    while(1){
         printf("Player's turn - enter a position(1-9):\n");
         scanf("%d", &move);
         s = is_occupied(move);
