@@ -208,3 +208,11 @@ void reset_board(){
     p7='7'; p8='8'; p9='9';
     printf("===============================================\n\n\n");
 }
+
+/*
+    I used ChatGPT for help when I got stuck with input handling and fixing bugs.
+    Also used Codex to test different game cases and check bot behavior.
+
+    No code was directly copied. I wrote everything myself based on understanding
+    and class learning.
+*/
