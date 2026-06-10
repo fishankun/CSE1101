@@ -12,6 +12,10 @@ Bot strategy:
 4. Take center
 5. Take corner
 6. Take edge
+
+Online Resources:
+1. "https://www.youtube.com/watch?v=uSvrqZDmxZA" - used to understand the concept of forks in Tic Tac Toe
+2. "https://chat.openai.com/" - for suggestions, bug finding and code review
 */
 
 char p1 = '1', p2 = '2', p3 = '3', p4 = '4', p5 = '5', p6 = '6', p7 = '7', p8 = '8', p9 = '9';
@@ -208,11 +212,3 @@ void reset_board(){
     p7='7'; p8='8'; p9='9';
     printf("===============================================\n\n\n");
 }
-
-/*
-    I used ChatGPT for help when I got stuck with input handling and fixing bugs.
-    Also used Codex to test different game cases and check bot behavior.
-
-    No code was directly copied. I wrote everything myself based on understanding
-    and class learning.
-*/
