@@ -23,12 +23,13 @@ int block_or_win(char symbol);
 int scan();
 int is_occupied(int move);
 int fork_block();
+void reset_board();
 
 int main(){
-    int i, move;
-    char replay = '1'; //initialize replay to a non-zero value to start the game loop 
+    int i, move, result;
+    char turn, replay = '1'; //initialize replay to a non-zero value to start the game loop 
     while(replay != '0'){
-        int turn = 0, result = 0; //reset variables for new game
+        turn = '0'; result = 0; //reset variables for new game
 
         printf("===============================================\n");
         printf("            WELCOME TO TIC TAC TOE             \n");
@@ -39,26 +40,26 @@ int main(){
         board(0, 'X');
 
         //Who will start first?
-        while(turn != 1 && turn != 2){
+        do{
             printf("But who will start first? (1 for player, 2 for bot): ");
-            scanf("%d", &turn);
-            if(turn != 1 && turn != 2) printf("Invalid input, please enter 1 for player or 2 for bot.\n");
-            }
-        if(turn == 2) printf("Bot starts first.\n\n");
+            scanf(" %c", &turn);
+            if(turn != '1' && turn != '2') printf("Invalid input, please enter 1 for player or 2 for bot.\n");
+        } while(turn != '1' && turn != '2');
+        if(turn == '2') printf("Bot starts first.\n\n");
         else printf("Player starts first.\n\n");
 
         for(i = 1; i <= 9; i++){
-            if(turn == 1){
+            if(turn == '1'){
                 move = scan();
                 board(move, 'X');
-                turn = 2; //player has made their first move, now bot will start
+                turn = '2'; //player has made their first move, now bot will start
             }
-            else if(turn == 2){
+            else if(turn == '2'){
                 printf("Bot's turn:\n");
                 move = bot();
                 printf("Bot chose position %d.\n", move);
                 board(move,'O');
-                turn = 1; //bot has made its first move, now player will start
+                turn = '1'; //bot has made its first move, now player will start
             }
             printf("\n");
             result = checker();
@@ -84,13 +85,7 @@ int main(){
         printf("Do you want to play again? (any key for yes, 0 for no): ");
         scanf(" %c", &replay);
         
-        // Reset board
-        if(replay != '0'){
-            p1='1'; p2='2'; p3='3';
-            p4='4'; p5='5'; p6='6';
-            p7='7'; p8='8'; p9='9';
-            printf("===============================================\n\n\n");
-        }
+        if(replay != '0') reset_board();
     }
     return 0;
 }
@@ -99,11 +94,14 @@ int scan(){
     int move, s = 0;
     while(1){
         printf("Player's turn - enter a position(1-9):\n");
-        scanf("%d", &move);
+        if(scanf("%d", &move) != 1 || move < 1 || move > 9){
+            printf("Invalid input, enter a position between 1 to 9.\n");
+            while(getchar() != '\n'); //clear input buffer
+            continue;
+        }
         s = is_occupied(move);
-        if(move >= 1 && move <= 9 && s == 0) break;
-        else if(move >= 1 && move <= 9 && s == 1) printf("Position already occupied, try again.\n");
-        else printf("Invalid input, enter a position between 1 to 9.\n");
+        if(!s) break;
+        else printf("Position already occupied, try again.\n");
     }
     return move;
 }
@@ -120,15 +118,15 @@ int is_occupied(int move){
     else return 1;
 }
 void board(int move, char symbol){
-    if(move == 1 && p1 == '1') p1 = symbol;
-    else if(move == 2 && p2 == '2') p2 = symbol;
-    else if(move == 3 && p3 == '3') p3 = symbol;
-    else if(move == 4 && p4 == '4') p4 = symbol;
-    else if(move == 5 && p5 == '5') p5 = symbol;
-    else if(move == 6 && p6 == '6') p6 = symbol;
-    else if(move == 7 && p7 == '7') p7 = symbol;
-    else if(move == 8 && p8 == '8') p8 = symbol;
-    else if(move == 9 && p9 == '9') p9 = symbol;
+    if(move == 1) p1 = symbol;
+    else if(move == 2) p2 = symbol;
+    else if(move == 3) p3 = symbol;
+    else if(move == 4) p4 = symbol;
+    else if(move == 5) p5 = symbol;
+    else if(move == 6) p6 = symbol;
+    else if(move == 7) p7 = symbol;
+    else if(move == 8) p8 = symbol;
+    else if(move == 9) p9 = symbol;
 
     printf("Current Board:\n");
     printf(" %c | %c | %c \n", p1, p2, p3);
@@ -174,53 +172,21 @@ int checker(){
     else return 0;
 }
 int won(char symbol){
-    if(p1 == symbol && p2 == symbol && p3 == symbol) return 1;
-    else if(p4 == symbol && p5 == symbol && p6 == symbol) return 1;
-    else if(p7 == symbol && p8 == symbol && p9 == symbol) return 1;
-    else if(p1 == symbol && p4 == symbol && p7 == symbol) return 1;
-    else if(p2 == symbol && p5 == symbol && p8 == symbol) return 1;
-    else if(p3 == symbol && p6 == symbol && p9 == symbol) return 1;
-    else if(p1 == symbol && p5 == symbol && p9 == symbol) return 1;
-    else if(p3 == symbol && p5 == symbol && p7 == symbol) return 1;
+    if( (p1 == symbol && p2 == symbol && p3 == symbol) || (p4 == symbol && p5 == symbol && p6 == symbol) || 
+        (p7 == symbol && p8 == symbol && p9 == symbol) || (p1 == symbol && p4 == symbol && p7 == symbol) || 
+        (p2 == symbol && p5 == symbol && p8 == symbol) || (p3 == symbol && p6 == symbol && p9 == symbol) || 
+        (p1 == symbol && p5 == symbol && p9 == symbol) || (p3 == symbol && p5 == symbol && p7 == symbol) ) return 1;
     else return 0;
 }
 int block_or_win(char symbol){
-    if(p5 == symbol){
-        if(p1 == symbol && p9 == '9') return 9;
-        else if(p2 == symbol && p8 == '8') return 8;
-        else if(p3 == symbol && p7 == '7') return 7;
-        else if(p4 == symbol && p6 == '6') return 6;
-        else if(p6 == symbol && p4 == '4') return 4;
-        else if(p7 == symbol && p3 == '3') return 3;
-        else if(p8 == symbol && p2 == '2') return 2;
-        else if(p9 == symbol && p1 == '1') return 1;
-    }
-
-    if(p2 == symbol){
-        if(p1 == symbol && p3 == '3') return 3;
-        else if(p3 == symbol && p1 == '1') return 1;
-    }
-    if(p4 == symbol){
-        if(p1 == symbol && p7 == '7') return 7;
-        else if(p7 == symbol && p1 == '1') return 1;
-    }
-    if(p6 == symbol){
-        if(p9 == symbol && p3 == '3') return 3;
-        else if(p3 == symbol && p9 == '9') return 9;
-    }
-    if(p8 == symbol){
-        if(p7 == symbol && p9 == '9') return 9;
-        else if(p9 == symbol && p7 == '7') return 7;
-    }
-
-    if(p1 == symbol &&p3 == symbol && p2 == '2') return 2;
-    else if(p1 == symbol && p7 == symbol && p4 == '4') return 4;
-    else if(p1 == symbol && p9 == symbol && p5 == '5') return 5;
-    else if(p2 == symbol && p8 == symbol && p5 == '5') return 5;
-    else if(p3 == symbol && p7 == symbol && p5 == '5') return 5;
-    else if(p4 == symbol && p6 == symbol && p5 == '5') return 5;
-    else if(p9 == symbol && p7 == symbol && p8 == '8') return 8;
-    else if(p9 == symbol && p3 == symbol && p6 == '6') return 6;
+    if(      ( (p5 == symbol && p1 == symbol) || (p6 == symbol && p3 == symbol) || (p8 == symbol && p7 == symbol) ) && p9 == '9') return 9;
+    else if( ( (p5 == symbol && p3 == symbol) || (p4 == symbol && p1 == symbol) || (p8 == symbol && p9 == symbol) ) && p7 == '7') return 7;
+    else if( ( (p5 == symbol && p7 == symbol) || (p2 == symbol && p1 == symbol) || (p6 == symbol && p9 == symbol) ) && p3 == '3') return 3;
+    else if( ( (p5 == symbol && p9 == symbol) || (p2 == symbol && p3 == symbol) || (p4 == symbol && p7 == symbol) ) && p1 == '1') return 1;
+    else if( ( (p5 == symbol && p8 == symbol) || (p1 == symbol && p3 == symbol) ) && p2 == '2') return 2;
+    else if( ( (p5 == symbol && p6 == symbol) || (p1 == symbol && p7 == symbol) ) && p4 == '4') return 4;
+    else if( ( (p5 == symbol && p4 == symbol) || (p9 == symbol && p3 == symbol) ) && p6 == '6') return 6;
+    else if( ( (p5 == symbol && p2 == symbol) || (p9 == symbol && p7 == symbol) ) && p8 == '8') return 8;
     return 0;
 }
 int fork_block(){
@@ -229,18 +195,16 @@ int fork_block(){
             if(p2 == '2') return 2;
             else if(p8 == '8') return 8;
         }
-        else if(p8 == 'X' && p6 == 'X'){
-            if(p3 == '3') return 3;
-        }
-        else if(p8 == 'X' && p1 == 'X'){
-            if(p4 == '4') return 4;
-        }
-        else if(p8 == 'X' && p3 == 'X'){
-            if(p6 == '6') return 6;
-        }
-        else if(p6 == 'X' && p7 == 'X'){
-            if(p8 == '8') return 8;
-        }
+        else if(p8 == 'X' && p6 == 'X' && p3 == '3') return 3;
+        else if(p8 == 'X' && p1 == 'X' && p4 == '4') return 4;
+        else if(p8 == 'X' && p3 == 'X' && p6 == '6') return 6;
+        else if(p6 == 'X' && p7 == 'X' && p8 == '8') return 8;
     }
     return 0;
+}
+void reset_board(){
+    p1='1'; p2='2'; p3='3';
+    p4='4'; p5='5'; p6='6';
+    p7='7'; p8='8'; p9='9';
+    printf("===============================================\n\n\n");
 }
