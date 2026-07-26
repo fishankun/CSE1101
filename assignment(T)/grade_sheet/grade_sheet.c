@@ -40,12 +40,12 @@ int main(){
         }
         printf("%-15s %-15s %-10s\n", "Course Name", "Total Marks", "Grade");
 
-        for (course = 0; course < 7; course++) {
+        for (course = 0; course < 7; course++){
             total_marks = marks[roll - 1][course][0] + marks[roll - 1][course][1];
             grade_calc(total_marks, grade);
 
             printf("%-15s %-15d %-10s\n", course_name[course], total_marks, grade);
-}
+        }
         printf("\nDo you want to see another result? (1 for Yes, 0 for No): ");
         scanf("%d", &choice);
     }while(choice);
