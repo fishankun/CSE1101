@@ -1,18 +1,17 @@
 #include <stdio.h>
 
-void reverse(int arr[], int start, int end){
-    if(start >= end) return;
+int reverse(int arr[], int start, int end){
+    if(start >= end) return 0;
     int temp;
     temp = arr[start];
     arr[start] = arr[end];
     arr[end] = temp;
-    reverse(arr, start + 1, end - 1);
-    return;
+    return reverse(arr, start + 1, end - 1);
 }
 int main(){
     int i, n, size, arr[8] = {3, 4, 5, 6, 2, 7, 1, 0};
     size = sizeof(arr) / sizeof(int);
-    reverse(arr, 0, size - 1);
+    int garbage = reverse(arr, 0, size - 1);
     for(i = 0; i < size; i++){
         printf("%d ", arr[i]);
     }
