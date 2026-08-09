@@ -3,14 +3,10 @@
 
 int main(){
     int row1, row2, col1, col2, i, j, a, b;
-    printf("Enter row no. for 1st matrix: ");
-    scanf("%d", &row1);
-    printf("Enter col no. for 1st matrix: ");
-    scanf("%d", &col1);
-    printf("Enter row no. for 2nd matrix: ");
-    scanf("%d", &row2);
-    printf("Enter col no. for 2nd matrix: ");
-    scanf("%d", &col2);
+    printf("Enter row and column no. for 1st matrix: ");
+    scanf("%d%d", &row1, &col1);
+    printf("Enter row and column no. for 2nd matrix: ");
+    scanf("%d%d", &row2, &col2);
     if(col1 != row2){
         printf("Invalid Input\n");
         return 0;
@@ -59,12 +55,10 @@ int main(){
 
 
 
-    mat1 = (int**)malloc(row1 * sizeof(int*));
     for(i = 0; i < row1; i++){
         free(*(mat1 + i));
     }
     free(mat1);
-    mat2 = (int**)malloc(row2 * sizeof(int*));
     for(i = 0; i < row2; i++){
         free(*(mat2 + i));
     }
