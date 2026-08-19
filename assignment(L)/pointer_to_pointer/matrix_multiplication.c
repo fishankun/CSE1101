@@ -39,6 +39,7 @@ int main(){
     }
 
 
+    printf("\nThe product:\n");
     for(a = 0; a < row1; a++){
         for(b = 0; b < col2; b++){
             int sum = 0;
