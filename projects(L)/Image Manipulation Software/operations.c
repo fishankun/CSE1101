@@ -10,10 +10,10 @@ void grayscale(Image *image){
     }
 }
 
-void brightness(Image *image){
-    int input;
-    printf("Enter a value: ");
-    scanf("%d", &input);
+void brightness(Image *image, int input){
+    // int input;
+    // printf("Enter a value: ");
+    // scanf("%d", &input);
 
     for(int i = 0; i < image->width * image->height; i++){
 

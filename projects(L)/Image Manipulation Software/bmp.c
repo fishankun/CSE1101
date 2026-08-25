@@ -20,8 +20,28 @@ Image *load_bmp(const char *filename){
         return NULL;
     }
 
+    if(file_header.signature != 0x4D42 ||
+        info_header.color_plane != 1 ||
+        info_header.BPP != 24 ||
+        info_header.compression != 0){
+        fclose(fp);
+        return NULL;
+    }
+
+    fseek(fp, file_header.pixel_offset, SEEK_SET);
+
+    if(info_header.width <= 0 || info_header.height <= 0){
+        fclose(fp);
+        return NULL;
+    }
+
     Image *image = create_image(info_header.width, info_header.height);
 
+    if(image == NULL){
+        fclose(fp);
+        return NULL;
+    }
+    
     unsigned char kill_padding;
     int exact_width = 3 * image->width;
     int padding = 4 - exact_width % 4;

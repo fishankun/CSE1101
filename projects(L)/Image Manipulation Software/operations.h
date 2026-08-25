@@ -4,7 +4,7 @@
 #include "image.h"
 
 void grayscale(Image *image);
-void brightness(Image *image);
+void brightness(Image *image, int input);
 void inversion(Image *image);
 void h_flip(Image *image);
 void v_flip(Image *image);
