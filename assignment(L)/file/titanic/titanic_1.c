@@ -58,6 +58,7 @@ int main(){
 
     printf("Male: %d%%\n", m_alive * 100 / m_total);
     printf("Female: %d%%\n", f_alive * 100 / f_total);
+    printf("Total: %.2f%%", 100.0 * (m_alive + f_alive) / (m_total + f_total));
 
     return 0;
 }
