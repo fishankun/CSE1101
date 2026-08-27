@@ -29,6 +29,7 @@ Ihandle *create_iup_image(Image *image){
 }
 
 int cancel_cb(Ihandle *ih){
+    (void)ih;
     return IUP_CLOSE;
 }
 
