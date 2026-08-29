@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define STUDENT_COUNT 50
+#define COURSE_COUNT 7
 
 typedef struct{
     char name[100];
@@ -18,11 +19,11 @@ typedef struct{
     float quiz;
 } marks;
 
-int open_student_info(student_info *student){
-    FILE *fp = fopen("student_info.txt", "rb");
+int open_student_info(student_info *student, char *filename){
+    FILE *fp = fopen(filename, "rb");
     if(!fp) return 0;
 
-    for(int i = 0; i < 50; i++){
+    for(int i = 0; i < STUDENT_COUNT; i++){
         fread(&student[i], sizeof(student_info), 1, fp);
     }
 
@@ -30,15 +31,15 @@ int open_student_info(student_info *student){
     return 1;
 }
 
-void save_student_info(student_info *student){
-    FILE *fp = fopen("student_info_out.txt", "wb");
+void save_student_info(student_info *student, char *filename){
+    FILE *fp = fopen(filename, "wb");
     for(int i = 0; i < STUDENT_COUNT; i++){
         fwrite(&student[i], sizeof(student_info), 1, fp);
     }
 
     fclose(fp);
 
-    fp = fopen("student_info_out_text.txt", "w");
+    fp = fopen(filename, "w");
     for(int i = 0; i < STUDENT_COUNT; i++){
         fprintf(fp, "%s\t%d\t%.2f\n", student[i].name, student[i].roll, student[i].cgpa);
     }
@@ -78,36 +79,25 @@ float mark_compare(float mark){
     else return 0.00;
 }
 
-int main(){
+int main(int argc, char *argv[]){
     student_info student[STUDENT_COUNT];
-    float total[7];
-    float cg[7];
+    float total[COURSE_COUNT];
+    float cg[COURSE_COUNT];
     float sum = 0;
     int i, j, is_sorted;
+    marks *courses[COURSE_COUNT];
 
-    if(!open_student_info(student)) return 0;
+    if(!open_student_info(student, argv[1])) return 0;
 
-    marks *cse1101 = result_reader("cse1101.txt");
-    marks *cse1101l = result_reader("cse1101l.txt");
-    marks *cse1102 = result_reader("cse1102.txt");
-    marks *stat1103 = result_reader("stat1103.txt");
-    marks *ge1105 = result_reader("ge1105.txt");
-    marks *se1106 = result_reader("se1106.txt");
-    marks *math1107 = result_reader("math1107.txt");
+    for(i = 0; i < COURSE_COUNT; i++) courses[i] = result_reader(argv[i + 2]);
 
-    if(!cse1101 || !cse1101l || !cse1102 || !stat1103 || !ge1105 || !se1106 || !math1107) return 0;
+    if(!courses[2] || !courses[3] || !courses[4] || !courses[5] || !courses[6] || !courses[7] || !courses[8]) return 0;
 
     for(i = 0; i < STUDENT_COUNT; i++){
-        total[0] = cse1101[i].final + cse1101[i].mid_term + cse1101[i].assignment + cse1101[i].attendance + cse1101[i].quiz;
-        total[1] = cse1101l[i].final + cse1101l[i].mid_term + cse1101l[i].assignment + cse1101l[i].attendance + cse1101l[i].quiz;
-        total[2] = cse1102[i].final + cse1102[i].mid_term + cse1102[i].assignment + cse1102[i].attendance + cse1102[i].quiz;
-        total[3] = stat1103[i].final + stat1103[i].mid_term + stat1103[i].assignment + stat1103[i].attendance + stat1103[i].quiz;
-        total[4] = ge1105[i].final + ge1105[i].mid_term + ge1105[i].assignment + ge1105[i].attendance + ge1105[i].quiz;
-        total[5] = se1106[i].final + se1106[i].mid_term + se1106[i].assignment + se1106[i].attendance + se1106[i].quiz;
-        total[6] = math1107[i].final + math1107[i].mid_term + math1107[i].assignment + math1107[i].attendance + math1107[i].quiz;
-
         sum = 0;
-        for(j = 0; j < 7; j++){
+        for(j = 0; j < COURSE_COUNT; j++){
+            total[j] = courses[j][i].final + courses[j][i].mid_term + courses[j][i].assignment + courses[j][i].attendance + courses[j][i].quiz;
+
             if(j == 1){
                 cg[j] = mark_compare(total[j]) * 1.5;
                 sum += cg[j];
@@ -119,13 +109,7 @@ int main(){
         student[i].cgpa = sum / 19.5;
     }
 
-    free(cse1101);
-    free(cse1101l);
-    free(cse1102);
-    free(stat1103);
-    free(ge1105);
-    free(se1106);
-    free(math1107);
+    for(i = 0; i < COURSE_COUNT; i++) free(courses[i]);
 
     int n = STUDENT_COUNT - 1;
     do{
@@ -141,7 +125,6 @@ int main(){
         n--;
     }while(!is_sorted);
 
-    save_student_info(student);
-
+    save_student_info(student, argv[9]);
     return 0;
 }
