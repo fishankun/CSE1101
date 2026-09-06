@@ -23,6 +23,34 @@ A simple **24-bit uncompressed BMP** image manipulation program written in **C**
 
 ---
 
+## Screenshots
+
+### Main Interface
+
+The main interface with a BMP image loaded into the application.
+
+![Main Interface](screenshots/image_loaded.png)
+
+### Brightness Adjustment
+
+The brightness adjustment dialog allows the user to enter a brightness value.
+
+![Brightness Adjustment](screenshots/brightness.png)
+
+### Crop Image
+
+The crop dialog allows the user to specify the position and dimensions of the area to crop.
+
+![Crop Image](screenshots/crop.png)
+
+### Grayscale Operation
+
+An example of an image after applying the grayscale operation.
+
+![Grayscale Operation](screenshots/grayscale.png)
+
+---
+
 ## 📁 Project Structure
 
 ```
